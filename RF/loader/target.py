@@ -67,25 +67,28 @@ def convertLas2Train(Lorig,labelMapping):
     return L
 
 class target(torch.utils.data.Dataset):
-    def __init__(self, DATA_FOLDER, LABEL_FOLDER, HEIGHT_FOLDER):
+    def __init__(self, DATA_FOLDER, LABEL_FOLDER, HEIGHT_FOLDER, dataset):
         super(target, self).__init__()
         
         # List of files
         self.data_files = glob.glob(os.path.join(DATA_FOLDER, '*.tif'))
         self.label_files = glob.glob(os.path.join(LABEL_FOLDER, '*.tif'))
         self.height_files = glob.glob(os.path.join(HEIGHT_FOLDER, '*.tif'))
-
+        self.dataset = dataset
+        
     def __len__(self):
 
         return len(self.data_files)
     
     def __getitem__(self, index):
 
-        # data = np.asarray(tifffile.imread(self.data_files[index]).transpose((2,0,1)), dtype='float32')
-        # label = np.asarray(convertLas2Train(tifffile.imread(self.label_files[index]), LABEL_MAPPING_LAS2TRAIN), dtype='int64')
+        if self.dataset == 'JAX' or self.dataset == 'OMA':
+            data = np.asarray(tifffile.imread(self.data_files[index]).transpose((2,0,1)), dtype='float32')
+            label = np.asarray(convertLas2Train(tifffile.imread(self.label_files[index]), LABEL_MAPPING_LAS2TRAIN), dtype='int64')
 
-        data = np.asarray(tifffile.imread(self.data_files[index]), dtype='float32')
-        label = np.asarray(convertLas2Train(tifffile.imread(self.label_files[index]), LABEL_MAPPING_AHS2TRAIN), dtype='int64')
+        if self.dataset == 'London' or self.dataset == 'Haiti':
+            data = np.asarray(tifffile.imread(self.data_files[index]), dtype='float32')
+            label = np.asarray(convertLas2Train(tifffile.imread(self.label_files[index]), LABEL_MAPPING_AHS2TRAIN), dtype='int64')
 
         height = tifffile.imread(self.height_files[index])
         height = height.astype(np.float32)

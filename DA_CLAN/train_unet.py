@@ -230,7 +230,7 @@ def main():
         os.makedirs(checkpoint_dir) 
 
     # dataloader
-    MAIN_FOLDER = '../Data/' + DATASET
+    MAIN_FOLDER = '../Data/data_DA' + DATASET
     DATA_FOLDER = MAIN_FOLDER + '/trainA/images'
     LABEL_FOLDER = MAIN_FOLDER + '/trainA/labels'
     HEIGHT_FOLDER = MAIN_FOLDER + '/trainA/heights'

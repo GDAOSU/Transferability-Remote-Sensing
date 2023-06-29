@@ -82,7 +82,7 @@ class datasetval(torch.utils.data.Dataset):
     
     def __getitem__(self, index):
 
-        if self.args.target == 'JAX' or self.args.target == 'OMA':
+        if self.args.source == 'JAX' or self.args.source == 'OMA':
             data = np.asarray(tifffile.imread(self.data_files[index]).transpose((2,0,1)), dtype='float32')
             label = np.asarray(convertLas2Train(tifffile.imread(self.label_files[index]), LABEL_MAPPING_LAS2TRAIN), dtype='int64')
         else:

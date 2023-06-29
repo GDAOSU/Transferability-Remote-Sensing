@@ -162,23 +162,24 @@ def cal_GLCM(image, win = 13):
 if __name__ == '__main__':  
 
     win_sizes = [13]
+    DATASET = 'OMA'
 
-    MAIN_FOLDER = r'../Data/Haiti_Haiti'
+    MAIN_FOLDER = r'../Data/' + DATASET + '_' + DATASET
     DATA_FOLDER = MAIN_FOLDER + '/trainA/images'
     LABEL_FOLDER = MAIN_FOLDER + '/trainA/labels'
     HEIGHT_FOLDER = MAIN_FOLDER + '/trainA/heights'
-    source_train = source(DATA_FOLDER, LABEL_FOLDER, HEIGHT_FOLDER)
+    source_train = source(DATA_FOLDER, LABEL_FOLDER, HEIGHT_FOLDER, DATASET)
     DATA_FOLDER_val = MAIN_FOLDER + '/valB/images'
     LABEL_FOLDER_val = MAIN_FOLDER + '/valB/labels'
     HEIGHT_FOLDER_val = MAIN_FOLDER + '/valB/heights'
-    target_val = target(DATA_FOLDER_val, LABEL_FOLDER_val, HEIGHT_FOLDER_val)
+    target_val = target(DATA_FOLDER_val, LABEL_FOLDER_val, HEIGHT_FOLDER_val, DATASET)
     source_num = len(source_train)
     target_num = len(target_val)
 
-    source_dir = r'./Indices/Haiti_Haiti/Haiti_trainA'
+    source_dir = os.path.join('./Indices/', DATASET + '_' + DATASET, 'trainA' )
     if not os.path.exists(source_dir):
         os.mkdir(source_dir)
-    target_dir = r'./Indices/Haiti_Haiti/Haiti_valB'
+    target_dir = os.path.join('./Indices/', DATASET + '_' + DATASET, 'valB' )
     if not os.path.exists(target_dir):
         os.mkdir(target_dir)
 

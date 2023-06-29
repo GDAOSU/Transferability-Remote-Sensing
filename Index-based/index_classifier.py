@@ -8,10 +8,10 @@ from index_loader import indexbased
 dataset = 'OMA'
 out_dir = './index-based label/' + dataset
 AGL_dir = './AGL/' + dataset
+path = r'/research/GDA/GuixiangZhang/transferability/Data/data/DFC2019/OMA512/Track1-MSI'
+
 if not os.path.exists(out_dir):
     os.makedirs(out_dir)
-
-path = r'S:\GDA\GuixiangZhang\transferability\transferability analysis\data\DFC2019\OMA512\Track1-MSI'
 data = indexbased(path)
 sample_num = len(data)
 

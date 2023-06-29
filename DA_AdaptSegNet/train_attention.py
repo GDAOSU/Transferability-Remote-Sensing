@@ -25,10 +25,10 @@ SAVE_PRED_EVERY = 5000
 NUM_STEPS = 100001
 RESUME = 0
 HEIGHT = True
-DATASET = 'JAX_OMA'
+DATASET = 'JAX_Haiti'
 SOURCE = DATASET.split("_")[0]
 TARGET = DATASET.split("_")[1]
-
+GPU = 0
 LEARNING_RATE = 0.02
 LEARNING_RATE_D = 1e-4
 MOMENTUM = 0.9
@@ -36,8 +36,7 @@ POWER = 0.9
 WEIGHT_DECAY = 0.0001
 LAMBDA_ADV_TARGET = 0.001
 GAN = 'Vanilla'
-GPU = 0
-SEED = 2021
+SEED = 2023
 
 torch.manual_seed(SEED)
 torch.cuda.manual_seed(SEED)
@@ -183,7 +182,7 @@ def main():
         os.makedirs(checkpoint_dir) 
 
     # dataloader
-    MAIN_FOLDER = '../Data/' + DATASET
+    MAIN_FOLDER = '../Data/data_DA' + DATASET
     DATA_FOLDER = MAIN_FOLDER + '/trainA/images'
     LABEL_FOLDER = MAIN_FOLDER + '/trainA/labels'
     HEIGHT_FOLDER = MAIN_FOLDER + '/trainA/heights'

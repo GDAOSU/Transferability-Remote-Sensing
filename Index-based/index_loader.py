@@ -9,7 +9,8 @@ import tifffile
 def load_rgb(path):
     img = tifffile.imread(path)
     img = np.float32(np.array(img))
-    img = img.transpose((2, 0, 1)) # Potsdam
+    if 'JAX' in path or 'OMA' in path:
+        img = img.transpose((2, 0, 1)) 
     return img
 
 # util function for reading data from single sample

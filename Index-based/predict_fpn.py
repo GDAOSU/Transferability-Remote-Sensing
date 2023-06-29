@@ -7,8 +7,8 @@ import torch.backends.cudnn as cudnn
 from tqdm import tqdm
 import random
 import pandas as pd
-import glob
 import metrics
+import glob
 from loader.datasetval import datasetval
 import segmentation_models_pytorch as smp
 from typing import Optional
@@ -17,10 +17,10 @@ from segmentation_models_pytorch.base.heads import SegmentationHead
 
 
 NUM_CLASSES = 4
-HEIGHT = [True]# ,False]
-DATASET = ['Baseline'] #, 'DA_AdaptSegNet', 'DA_CLAN', 'DA_ScaleAware'
-SOURCE = ['London'] # 'JAX', , 'OMA', 'Haiti'
-TARGET = ['OMA'] #'JAX', 'London',, 'Haiti'
+HEIGHT = [False,True]
+DATASET = ['Baseline','DA_AdaptSegNet','DA_CLAN','DA_ScaleAware']
+SOURCE = ['JAX','London','OMA','Haiti']
+TARGET = ['JAX','London','OMA','Haiti']
 GPU = 0
 SEED = 2023
 
@@ -32,6 +32,30 @@ cudnn.benchmark = False
 cudnn.deterministic = True
 os.environ['PYTHONHASHSEED'] = str(SEED)
 torch.cuda.manual_seed_all(SEED)
+
+from matplotlib import colors
+def mycmap():
+    color = []
+    color.append([100,31,31])      # 0  brown (ground)
+    color.append([0,128,0])        # 1  green (trees)
+    color.append([255,0,0])        # 2  red (buildings)
+    color.append([0,0,255])        # 3  blue (water)
+    color.append([0,0,0])          # 4  black (other)  
+    color = np.array(color)/255
+    cmap = colors.ListedColormap(color)
+    return cmap
+
+def classnames():
+    return ["GROUND", "TREES", "BUILDING", "WATER",
+            "VOID"]
+
+import matplotlib.patches as mpatches           
+def mypatches():
+    patches = []
+    for counter, name in enumerate(classnames()):
+        patches.append(mpatches.Patch(color=mycmap().colors[counter],
+                                      label=name))
+    return patches
 
 def get_arguments():
 
@@ -87,11 +111,12 @@ class FPN_CLAN(smp.FPN):
 def main():
 
     root = r'/research/GDA/GuixiangZhang/transferability'
+    # root = r'S:/GDA/GuixiangZhang/transferability'
     for height in HEIGHT:
         for source in SOURCE:
             for target in TARGET:
                 for dataset in DATASET:
-                    
+                                        
                     if dataset != 'Baseline':
                         if source == target or source == 'OMA' or source == 'Haiti':
                             continue
@@ -101,13 +126,13 @@ def main():
                                 continue   
 
                     # dataloader
-                    MAIN_FOLDER = '../Data/' + source + '_' + target
+                    MAIN_FOLDER = '../Data/' + target + '_' + target
                     DATA_FOLDER_val = MAIN_FOLDER + '/valB/images'
                     LABEL_FOLDER_val = MAIN_FOLDER + '/valB/labels'
                     HEIGHT_FOLDER_val = MAIN_FOLDER + '/valB/heights'
                     INDEX_FOLDER_val = './index-based label/' + target
                     val_set = datasetval(DATA_FOLDER_val, LABEL_FOLDER_val, HEIGHT_FOLDER_val, INDEX_FOLDER_val, target)
-                    val_loader = torch.utils.data.DataLoader(val_set, batch_size=4)
+                    val_loader = torch.utils.data.DataLoader(val_set, batch_size=1)
 
                     if height:
                         input = 5
@@ -127,13 +152,20 @@ def main():
 
                     device = torch.device('cuda:{}'.format(str(args.gpu)))
 
-                    if height:
-                        path = osp.join(root, dataset, 'results', source + '_' + target,  source + '_' + target + '_height_fpn', 'checkpoints')
+                    if dataset == 'Baseline':
+                        if height:
+                            path = osp.join(root, dataset, 'results', source + '_' + source, source + '_' + source + '_height_fpn', source + '_' + target)
+                        else:
+                            path = osp.join(root, dataset, 'results', source + '_' + source, source + '_' + source + '_no_height_fpn', source + '_' + target)
                     else:
-                        path = osp.join(root, dataset, 'results', source + '_' + target,  source + '_' + target + '_no_height_fpn', 'checkpoints')
+                        if height:
+                            path = osp.join(root, dataset, 'results', source + '_' + target,  source + '_' + target + '_height_fpn', 'checkpoints')
+                        else:
+                            path = osp.join(root, dataset, 'results', source + '_' + target,  source + '_' + target + '_no_height_fpn', 'checkpoints')
 
                     path_check = glob.glob(os.path.join(path, '*.pth'))
                     checkpoint = torch.load(path_check[0], map_location=str(device))
+
                     model.load_state_dict(checkpoint)
                     print('load trained model from ' + path)  
                     model.eval()
@@ -172,6 +204,9 @@ def val(model, dataloader, use_height, out_dir, filename, device, dataset):
         conf_mat1.add_batch(index, pred)
         conf_mat2.add_batch(gt, pred)
         pbar.update()
+        id = batch["id"][0]
+        output = pred.astype(np.uint8)
+        output = np.squeeze(output)
 
     recalls = np.zeros((3, 3))
     precisions = np.zeros((3, 3))

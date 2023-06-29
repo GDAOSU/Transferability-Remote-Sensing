@@ -20,8 +20,8 @@ NUM_CLASSES = 4
 SAVE_PRED_EVERY = 5000
 NUM_STEPS = 100001
 RESUME = 0
-HEIGHT = True
-DATASET = 'Haiti_Haiti'
+HEIGHT = False
+DATASET = 'London_London'
 GPU = 0
 SOURCE = DATASET.split("_")[0]
 TARGET = DATASET.split("_")[1]
@@ -30,7 +30,7 @@ LEARNING_RATE = 0.02
 MOMENTUM = 0.9
 POWER = 0.9
 WEIGHT_DECAY = 0.0001
-SEED = 2022
+SEED = 2023
 
 torch.manual_seed(SEED)
 torch.cuda.manual_seed(SEED)
@@ -194,7 +194,6 @@ def main():
         print('load trained model from ' + path)  
     model.train()
     model.to(device)
-
 
     # loss fuction and optimizer
     loss_fn = nn.CrossEntropyLoss(ignore_index=4, reduction='mean')

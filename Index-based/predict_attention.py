@@ -7,8 +7,8 @@ import torch.backends.cudnn as cudnn
 from tqdm import tqdm
 import random
 import pandas as pd
-import glob
 import metrics
+import glob
 from loader.datasetval import datasetval
 import segmentation_models_pytorch as smp
 from attention import CAM_Module
@@ -17,10 +17,10 @@ from segmentation_models_pytorch.deeplabv3.decoder import DeepLabV3PlusDecoder
 from segmentation_models_pytorch.base.heads import SegmentationHead
 
 NUM_CLASSES = 4
-HEIGHT = [True]# ,False]
-DATASET = ['Baseline'] #, 'DA_AdaptSegNet', 'DA_CLAN', 'DA_ScaleAware'
-SOURCE = ['London'] # 'JAX', , 'OMA', 'Haiti'
-TARGET = ['OMA'] #'JAX', 'London',, 'Haiti'
+HEIGHT = [False,True]
+DATASET = ['Baseline','DA_AdaptSegNet','DA_CLAN','DA_ScaleAware']
+SOURCE = ['JAX','London','OMA','Haiti']
+TARGET = ['JAX','London','OMA','Haiti']
 GPU = 0
 SEED = 2023
 
@@ -118,9 +118,9 @@ def main():
                         if source == 'OMA' or source == 'Haiti':
                             if source != target:
                                 continue    
-
+ 
                     # dataloader
-                    MAIN_FOLDER = '../Data/' + source + '_' + target
+                    MAIN_FOLDER = '../Data/' + target + '_' + target
                     DATA_FOLDER_val = MAIN_FOLDER + '/valB/images'
                     LABEL_FOLDER_val = MAIN_FOLDER + '/valB/labels'
                     HEIGHT_FOLDER_val = MAIN_FOLDER + '/valB/heights'
@@ -146,13 +146,20 @@ def main():
 
                     device = torch.device('cuda:{}'.format(str(args.gpu)))
 
-                    if height:
-                        path = osp.join(root, dataset, 'results', source + '_' + target,  source + '_' + target + '_height_attention', 'checkpoints')
+                    if dataset == 'Baseline':
+                        if height:
+                            path = osp.join(root, dataset, 'results', source + '_' + source, source + '_' + source + '_height_attention', source + '_' + target)
+                        else:
+                            path = osp.join(root, dataset, 'results', source + '_' + source, source + '_' + source + '_no_height_attention', source + '_' + target)
                     else:
-                        path = osp.join(root, dataset, 'results', source + '_' + target,  source + '_' + target + '_no_height_attention', 'checkpoints')
+                        if height:
+                            path = osp.join(root, dataset, 'results', source + '_' + target,  source + '_' + target + '_height_attention', 'checkpoints')
+                        else:
+                            path = osp.join(root, dataset, 'results', source + '_' + target,  source + '_' + target + '_no_height_attention', 'checkpoints')
 
                     path_check = glob.glob(os.path.join(path, '*.pth'))
                     checkpoint = torch.load(path_check[0], map_location=str(device))
+
                     model.load_state_dict(checkpoint)
                     print('load trained model from ' + path)  
                     model.eval()

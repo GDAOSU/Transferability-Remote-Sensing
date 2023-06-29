@@ -12,22 +12,19 @@ random.seed(2022)
 n_classes = 4
 
 ###############################
-source_name = 'Haiti'
-model_path = r"./results/Haiti_Haiti"
-MAIN_FOLDER = r'../Data/Haiti_Haiti'
+source_name = 'OMA'
+model_path = r"./results/OMA_OMA"
+MAIN_FOLDER = r'../Data/OMA_OMA'
 ###############################
 
 DATA_FOLDER = MAIN_FOLDER + '/trainA/images'
 LABEL_FOLDER = MAIN_FOLDER + '/trainA/labels'
 HEIGHT_FOLDER = MAIN_FOLDER + '/trainA/heights'
-source_train = source(DATA_FOLDER, LABEL_FOLDER, HEIGHT_FOLDER)
+source_train = source(DATA_FOLDER, LABEL_FOLDER, HEIGHT_FOLDER, source_name)
 source_num = len(source_train)
 section = int(source_num/5)
 downers = [0, section, section*2, section*3, section*4]
 uppers = [section, section*2, section*3, section*4, source_num]
-
-if not os.path.exists(model_path):
-    os.mkdir(model_path)
 
 number_of_trees = 500
 max_depth = 20
@@ -72,21 +69,21 @@ X_train_all = X_train_all[y_train_all != n_classes, :]
 y_train_all = y_train_all[y_train_all != n_classes]
 
 
-model_name = 'RGBN_GLCM'
-selected_feature = [0, 1, 2, 3,
-                    5, 6, 7, 8, 9, 10]
-X_train_all = X_train_all[:, selected_feature]
-time_start=time.time()
-clf.fit(np.nan_to_num(X_train_all), y_train_all)
-time_end=time.time()
-print('totally cost',time_end-time_start)
-joblib.dump(clf, os.path.join(model_path, model_name + '.pkl'))
-
-
-# model_name = 'RGBNH_GLCM'
+# model_name = 'RGBN_GLCM'
+# selected_feature = [0, 1, 2, 3,
+#                     5, 6, 7, 8, 9, 10]
+# X_train_all = X_train_all[:, selected_feature]
 # time_start=time.time()
 # clf.fit(np.nan_to_num(X_train_all), y_train_all)
 # time_end=time.time()
 # print('totally cost',time_end-time_start)
-# joblib.dump(clf, os.path.join(model_path, model_name+'.pkl'))
+# joblib.dump(clf, os.path.join(model_path, model_name + '.pkl'))
+
+
+model_name = 'RGBNH_GLCM'
+time_start=time.time()
+clf.fit(np.nan_to_num(X_train_all), y_train_all)
+time_end=time.time()
+print('totally cost',time_end-time_start)
+joblib.dump(clf, os.path.join(model_path, model_name+'.pkl'))
 

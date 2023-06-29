@@ -5,18 +5,18 @@ import h5py
 from loader.source import source
 
 ###############################
-source_name = 'Haiti'
-glcm_dir = r"./Indices/Haiti_Haiti/Haiti_trainA"
-out_dir = r"./results/Haiti_Haiti"
+source_name = 'OMA'
+glcm_dir = r"./Indices/OMA_OMA/trainA"
+out_dir = r"./results/OMA_OMA"
 if not os.path.exists(out_dir):
     os.mkdir(out_dir)
-MAIN_FOLDER = r'../Data/Haiti_Haiti'
+MAIN_FOLDER = r'../Data/OMA_OMA'
 ###############################
 
 DATA_FOLDER = MAIN_FOLDER + '/trainA/images'
 LABEL_FOLDER = MAIN_FOLDER + '/trainA/labels'
 HEIGHT_FOLDER = MAIN_FOLDER + '/trainA/heights'
-source_train = source(DATA_FOLDER, LABEL_FOLDER, HEIGHT_FOLDER)
+source_train = source(DATA_FOLDER, LABEL_FOLDER, HEIGHT_FOLDER, source_name)
 source_num = len(source_train)
 
 win = 13

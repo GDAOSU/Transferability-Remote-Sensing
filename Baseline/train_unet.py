@@ -20,8 +20,8 @@ NUM_CLASSES = 4
 SAVE_PRED_EVERY = 5000
 NUM_STEPS = 100001
 RESUME = 0
-HEIGHT = True
-DATASET = 'Haiti_Haiti'
+HEIGHT = False
+DATASET = 'London_London'
 GPU = 0
 SOURCE = DATASET.split("_")[0]
 TARGET = DATASET.split("_")[1]
@@ -173,7 +173,6 @@ def main():
     model.train()
     model.to(device)
 
-
     # loss fuction and optimizer
     loss_fn = nn.CrossEntropyLoss(ignore_index=4, reduction='mean')
     optimizer = create_optimizers(model, args)
@@ -220,12 +219,11 @@ def main():
 
             train_loss=[]
             train_acc=[]
-
+        
         if i_iter % args.save_pred_every == 0 and i_iter != 0:
             print('saving checkpoint.....')
             val(model, val_loader, args, out_dir, i_iter, device)
             torch.save(model.state_dict(), osp.join(checkpoint_dir,'iter{}.pth'.format(i_iter)))
-
         i_iter +=1
 
 def val(model, dataloader, args, out_dir, i_iter, device):
@@ -261,7 +259,7 @@ def val(model, dataloader, args, out_dir, i_iter, device):
         log_file.write('%s\n' % message) 
 
     model.train()
-    return
+    return 
 
 if __name__ == '__main__':
     main()
