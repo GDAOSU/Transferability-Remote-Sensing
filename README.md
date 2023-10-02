@@ -50,7 +50,7 @@ mamba install segmentation-models-pytorch
 ├── DA_CLAN                   # Domain adaptation method - CLAN
 ├── DA_ScaleAware             # Domain adaptation method - ScaleAware
 ├── Data                      # Data storage
-├── Index-based               # Automation for generating raw and DA models, mIoU etc.
+├── Index-based               # Automation for evaluating base and DA models.
 ├── Posterior                 # Posterior probability calculations
 ├── RF                        # Random Forest model
 ├── Supplimentary             # Additional resources and figures
