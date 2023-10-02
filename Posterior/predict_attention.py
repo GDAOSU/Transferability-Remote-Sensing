@@ -12,7 +12,7 @@ from loader.datasetval import datasetval
 import segmentation_models_pytorch as smp
 from attention import CAM_Module
 from typing import Optional
-from segmentation_models_pytorch.deeplabv3.decoder import DeepLabV3PlusDecoder
+from segmentation_models_pytorch.decoders.deeplabv3.decoder import DeepLabV3PlusDecoder
 from segmentation_models_pytorch.base.heads import SegmentationHead
 
 NUM_CLASSES = 4

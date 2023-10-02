@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pickle
 import cv2
-from skimage.feature import greycomatrix, greycoprops
+from skimage.feature import graycomatrix, graycoprops
 from skimage.color import rgb2gray
 from scipy.interpolate import RectBivariateSpline
 from numpy.lib.stride_tricks import as_strided as ast
@@ -31,16 +31,16 @@ def im_resize(im,Nx,Ny):
 
 def p_me(Z, win):
     '''
-    loop to calculate greycoprops
+    loop to calculate graycoprops
     '''
     try:
-        glcm = greycomatrix(Z, [win], [0, np.pi/4, np.pi/2, 3*np.pi/4], symmetric=True, normed=True,levels=64)
-        cont = greycoprops(glcm, 'contrast')
-        diss = greycoprops(glcm, 'dissimilarity')
-        homo = greycoprops(glcm, 'homogeneity')
-        eng = greycoprops(glcm, 'energy')
-        corr = greycoprops(glcm, 'correlation')
-        ASM = greycoprops(glcm, 'ASM')
+        glcm = graycomatrix(Z, [win], [0, np.pi/4, np.pi/2, 3*np.pi/4], symmetric=True, normed=True,levels=64)
+        cont = graycoprops(glcm, 'contrast')
+        diss = graycoprops(glcm, 'dissimilarity')
+        homo = graycoprops(glcm, 'homogeneity')
+        eng = graycoprops(glcm, 'energy')
+        corr = graycoprops(glcm, 'correlation')
+        ASM = graycoprops(glcm, 'ASM')
         return (cont, diss, homo, eng, corr, ASM)
     except:
         return np.zeros((6,4),np.float64)

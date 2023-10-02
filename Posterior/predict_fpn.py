@@ -11,7 +11,7 @@ import glob
 from loader.datasetval import datasetval
 import segmentation_models_pytorch as smp
 from typing import Optional
-from segmentation_models_pytorch.fpn.decoder import FPNDecoder
+from segmentation_models_pytorch.decoders.fpn.decoder import FPNDecoder
 from segmentation_models_pytorch.base.heads import SegmentationHead
 
 

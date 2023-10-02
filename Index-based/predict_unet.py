@@ -12,7 +12,7 @@ import pandas as pd
 import metrics
 from loader.datasetval import datasetval
 import segmentation_models_pytorch as smp
-from segmentation_models_pytorch.unet.decoder import UnetDecoder
+from segmentation_models_pytorch.decoders.unet.decoder import UnetDecoder
 from segmentation_models_pytorch.base.heads import SegmentationHead
 
 

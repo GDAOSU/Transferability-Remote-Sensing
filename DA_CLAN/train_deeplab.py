@@ -18,7 +18,7 @@ from loader.dataset import dataset
 from loader.datasetval import datasetval
 from loader.dataset_target import dataset_target
 import segmentation_models_pytorch as smp
-from segmentation_models_pytorch.deeplabv3.decoder import DeepLabV3PlusDecoder
+from segmentation_models_pytorch.decoders.deeplabv3.decoder import DeepLabV3PlusDecoder
 from segmentation_models_pytorch.base.heads import SegmentationHead
 
 
