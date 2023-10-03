@@ -135,4 +135,4 @@ IMPORTANT! READ CAREFULLY: This End-User License Agreement (“EULA”) is a leg
 ![](Supplimentary/Fig3.png)
 
 ## Acknowledgments
-TBD
+We thank the organizers of the 2019 Data Fusion Contest and DigitalGlobe for providing the JAX and OMA datasets.
