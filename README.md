@@ -37,6 +37,25 @@ pip install segmentation-models-pytorch
 mamba install segmentation-models-pytorch
 ```
 
+## Public Datasets
+
+SpaceNet:
+https://spacenet.ai/datasets/
+
+BigEarthNet:
+https://bigearth.net/
+
+EarthNet:
+https://earthnets.github.io/
+
+DEEPGLOBE:
+http://deepglobe.org/index.html
+
+Data fusion contest 2020:
+https://ieee-dataport.org/competitions/2020-ieee-grss-data-fusion-contest
+
+
+
 ## Folder Structure
 ```
 .
